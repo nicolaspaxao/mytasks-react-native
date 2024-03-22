@@ -1,25 +1,25 @@
 import React, { useContext, useState } from 'react'
-import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, FlatList, } from 'react-native';
+import { Platform, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import { TaskList } from '../components/TaskList';
-import { TasksContext } from '../context/TasksContext';
+import { ITask, TasksContext, useTaskList } from '../context/TasksContext';
 
 export const Home = () => {
   const [newTask, setNewTask] = useState('');
 
-  const taskContext = useContext(TasksContext);
+  const { addTask } = useTaskList();
 
   const handleAddNewTaska = () => {
     const data = {
       id: String(new Date().getTime()),
       title: newTask ? newTask : 'Task empty'
-    }
+    } as ITask;
+
+    addTask(data);
   }
 
   return (
     <SafeAreaView style={styles.safeArea}>
-
       <View style={styles.container}>
-        <StatusBar />
         <Text style={styles.title}>Welcome, Dev!</Text>
         <TextInput
           onChangeText={setNewTask}
@@ -31,9 +31,7 @@ export const Home = () => {
           <Text style={styles.buttonText}>Adicionar</Text>
         </TouchableOpacity>
         <Text style={styles.titleTasks}>Minhas tarefas</Text>
-
         <TaskList />
-
       </View>
     </SafeAreaView>
   );
@@ -83,5 +81,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold'
   },
-
 })
